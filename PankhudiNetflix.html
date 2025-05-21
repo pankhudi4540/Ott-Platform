@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> Pankhudi - Entertainment Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #0b0b0b;
+      color: #fff;
+    }
+
+    header {
+      background-color: #000;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      color: #e50914;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .banner {
+      background: url('https://th.bing.com/th/id/R.8f0de7daf2a319a80cc80333bf35d9ed?rik=FgNspQZgJYcNtw&riu=http%3a%2f%2fwww.movie-list.com%2fblog%2fwp-content%2fuploads%2f2015%2f02%2fspider-man.jpg&ehk=Rt0uxLUcCYL92FQ9B5bMQ5daFW%2fnXHVzPcZoppL%2fHKo%3d&risl=&pid=ImgRaw&r=0') center/cover no-repeat;
+      height: 60vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 40px;
+      font-size: 36px;
+      font-weight: bold;
+      text-shadow: 2px 2px 8px #000;
+    }
+
+    .section {
+      padding: 20px;
+    }
+
+    .section h2 {
+      margin-bottom: 15px;
+      font-size: 22px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background-color: #1f1f1f;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card img {
+      width: 100%;
+      display: block;
+      height: 225px;
+      object-fit: cover;
+    }
+
+    .card-title {
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .show-more {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .show-more button {
+      background-color: #e50914;
+      border: none;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .show-more button:hover {
+      background-color: #0055ff;
+    }
+
+    .video-preview {
+      margin: 20px auto;
+      max-width: 640px;
+    }
+  </style>
+</head>
+<body>
+
+<header>🎬 MoviesHub </header>
+
+<div class="banner">
+  Featured: Spider Man</div>
+<div class="section">
+  <h2>Popular Movies and Shows</h2>
+  <div class="grid" id="popular-movies"></div>
+  <div class="show-more">
+    <button onclick="alert('More movies coming soon!')">Show More</button>
+  </div>
+</div>
+<div class="section">
+  <h2>Trending Shows</h2>
+  <div class="grid" id="trending-shows"></div>
+  <div class="show-more">
+    <button onclick="alert('More shows coming soon!')">Show More</button>
+  </div>
+</div>
+<div class="section" style="text-align:center">
+  <h2>User Login (Coming Soon)</h2>
+</div>
+
+<script>
+  const popularMovies = [
+    { title: "Jujutsu kaisen", img: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2023/09/jujutsu-kaisen.jpg" },
+    { title: "Madgaon Express", img: "https://upload.wikimedia.org/wikipedia/en/1/1f/Madgaon_Express_film_poster.jpg" },
+    { title: "Spider-Man", img: "https://image.tmdb.org/t/p/w300/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" },
+    { title: "Sonu ke Titu ki Sweety", img: "https://images.justwatch.com/poster/98295434/s718/sonu-ke-titu-ki-sweety.%7Bformat%7D" },
+    { title: "Kabir singh", img:"https://wallpapercave.com/wp/wp4401184.jpg"},
+    { title: "Solo leveling", img:"https://static1.cbrimages.com/wordpress/wp-content/uploads/sharedimages/2024/04/solo-leveling-arise.jpg"},
+  ];
+  
+  const trendingShows = [
+    { title: "The Boys", img: "https://image.tmdb.org/t/p/w300/mY7SeH4HFFxW1hiI6cWuwCRKptN.jpg" },
+    { title: "Mismatched", img: "https://img.rgstatic.com/content/show/6f39dbd4-cba3-444f-8efb-5ace3bdeffee/poster-500.jpg" },
+    { title: "All of Us Are Dead", img: "https://th.bing.com/th/id/OIP.w5AxklnoTYwQab_8ADgQcAAAAA?rs=1&pid=ImgDetMain" },
+    { title: "Squid games", img: "https://m.media-amazon.com/images/M/MV5BYWE3MDVkN2EtNjQ5MS00ZDQ4LTliNzYtMjc2YWMzMDEwMTA3XkEyXkFqcGdeQXVyMTEzMTI1Mjk3.V1_FMjpg_UX1000.jpg" },
+    { title: "Lucifer", img: "https://i.pinimg.com/originals/a6/68/15/a66815b0d465460c7843c4a9ac7be634.jpg" },
+    { title: "Alice-in- borderland", img: "https://assets-prd.ignimgs.com/2022/06/07/alice-in-borderland-button-01-1654582841140.jpg" },
+  ];
+
+  function populateGrid(id, data) {
+    const grid = document.getElementById(id);
+    data.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${item.img}" alt="${item.title}" loading="lazy">
+        <div class="card-title">${item.title}</div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  populateGrid("popular-movies", popularMovies);
+  populateGrid("trending-shows", trendingShows);
+</script>
+
+</body>
+</html>
+Footer
+© 2025 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact
+Manage cookies
+Do not share my personal information
